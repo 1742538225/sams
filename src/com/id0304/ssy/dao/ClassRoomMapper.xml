@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.id0304.ssy.dao.ClassRoomMapper">
+	<resultMap type="com.id0304.ssy.pojo.ClassRoom" id="classRoom">
+		<id column="c_id" property="c_id"/>
+		<result column="c_co_id" property="c_co_id"/>
+		<result column="c_name" property="c_name"/>
+		<result column="c_state" property="c_state"/>
+		<association property="course" javaType="com.id0304.ssy.pojo.Course">
+			<result column="co_id" property="co_id"/>
+			<result column="co_name" property="co_name"/>
+			<result column="co_type" property="co_type"/>
+			<result column="co_lessonnum" property="co_lessonnum"/>
+			<result column="co_weeks" property="co_weeks"/>
+			<result column="co_place" property="co_place"/>
+			<result column="co_teacher" property="co_teacher"/>
+			<result column="co_weekday" property="co_weekday"/>
+			<result column="co_grade" property="co_grade"/>
+			<result column="co_depart" property="co_depart"/>
+			<result column="co_profession" property="co_profession"/>
+			<result column="co_tedepart" property="co_tedepart"/>
+			<result column="co_credit" property="co_credit"/>
+			<result column="co_occupy" property="co_occupy"/>
+			<result column="co_content" property="co_content"/>
+		</association>
+	</resultMap>
+	
+	<select id="selectAllClassRoom" resultMap="classRoom">
+		select c.*,co.*
+		from classRoom c 
+		left join course co 
+		on 
+		c.c_co_id = co.co_id
+	</select>
+	
+	<select id="selectClassRoomByCondition" resultMap="classRoom">
+		select c.*,co.* 
+		from classRoom c 
+		inner join course co 
+		where 
+		c.c_co_id = co.co_id 
+		and ${classRoom.c_name} 
+		and ${course.co_name} 
+		and ${course.co_type} 
+	</select>
+	
+	<insert id="insertClassRoom" parameterType="com.id0304.ssy.pojo.ClassRoom">
+		insert into classroom(c_name,c_state,c_co_id) 
+		values
+		(#{c_name},#{c_state},#{c_co_id})
+	</insert>
+	
+	<delete id="deleteClassRoomById" parameterType="String">
+		delete from classroom 
+		where 
+		c_id = #{value}
+	</delete>
+	
+	<select id="selectClassRoomById" parameterType="String" resultType="com.id0304.ssy.pojo.ClassRoom">
+		select *from 
+		classroom 
+		where 
+		c_id = #{value}
+	</select>
+	
+	<update id="updateClassRoom" parameterType="com.id0304.ssy.pojo.ClassRoom">
+		update classroom 
+		set 
+		c_co_id=#{c_co_id},
+		c_name=#{c_name},
+		c_state=#{c_state}
+	</update>
+	
+	<select id="selectClassRoomByNameOrId" resultType="com.id0304.ssy.pojo.ClassRoom">
+		select *from classroom 
+		where 
+		1=1 ${findtext} 
+		limit 
+		#{index},#{count}
+	</select>
+	
+	<select id="selectClassRoomByPage" resultType="com.id0304.ssy.pojo.ClassRoom">
+		select *from classroom 
+		limit 
+		#{index},#{count}
+	</select>
+</mapper>

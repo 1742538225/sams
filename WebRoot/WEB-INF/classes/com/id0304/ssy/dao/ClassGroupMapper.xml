@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.id0304.ssy.dao.ClassGroupMapper">
+	<resultMap type="com.id0304.ssy.pojo.ClassGroup" id="CGroupAndStuAndCo">
+		<id column="c_id" property="c_id" />
+		<result column="c_co_id" property="c_co_id"/>
+		<result column="c_u_id" property="c_u_id"/>
+		<association property="user" javaType="com.id0304.ssy.pojo.User">
+			<result column="u_id" property="u_id" />
+			<result column="u_password" property="u_password" />
+			<result column="u_name" property="u_name" />
+			<result column="u_identify" property="u_identify" />
+			<result column="u_sex" property="u_sex" />
+			<result column="u_age" property="u_age" />
+			<result column="u_level" property="u_level" />
+			<result column="u_depart" property="u_depart" />
+			<result column="u_profession" property="u_profession" />
+			<result column="u_class" property="u_class" />
+			<result column="u_address" property="u_address" />
+			<result column="u_tel" property="u_tel" />
+			<result column="u_enrolment" property="u_enrolment" />
+			<result column="u_detail" property="u_detail" />
+		</association>
+		<association property="course" javaType="com.id0304.ssy.pojo.Course">
+			<result column="co_id" property="co_id" />
+			<result column="co_name" property="co_name" />
+			<result column="co_type" property="co_type" />
+			<result column="co_lessonnum" property="co_lessonnum" />
+			<result column="co_weeks" property="co_weeks" />
+			<result column="co_place" property="co_place" />
+			<result column="co_teacher" property="co_teacher" />
+			<result column="co_weekday" property="co_weekday" />
+			<result column="co_grade" property="co_grade" />
+			<result column="co_depart" property="co_depart" />
+			<result column="co_profession" property="co_profession" />
+			<result column="co_tedepart" property="co_tedepart" />
+			<result column="co_credit" property="co_credit" />
+			<result column="co_occupy" property="co_occupy" />
+			<result column="co_content" property="co_content" />
+		</association>
+	</resultMap>
+	
+	<select id="selectStuAndCGroupByCoid" parameterType="String" resultMap="CGroupAndStuAndCo">
+		select c.*,u.* 
+		from classgroup c 
+		inner join 
+		user u 
+		on 
+		c.c_u_id=u.u_id  
+		and (${ value}
+		1=0)
+	</select>
+	
+	<insert id="insertCGroupByUidAndCoid">
+		insert into classgroup(c_u_id,c_co_id) 
+		values(#{u_id},#{co_id})
+	</insert>
+</mapper>

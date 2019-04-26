@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+        <!-- 扫描@Controler  @Service   -->
+        <context:component-scan base-package="com.id0304"/>
+        
+        <!-- 处理器映射器 -->
+<!--         <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/> -->
+        <!-- 处理器适配器 -->
+<!--         <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/> -->
+        <!-- 注解驱动 -->
+        <mvc:annotation-driven  conversion-service="conversionServiceFactoryBean"/>
+        <mvc:default-servlet-handler/>
+        
+        <!-- SpringMvc拦截器 -->
+      <!--  <mvc:interceptors>
+        	<mvc:interceptor>
+        		<mvc:mapping path="/**"/>
+        		自定义的拦截器类
+        		<bean class="com.id0304.ssy.interceptor.UserLoginInterceptor"/>
+        	</mvc:interceptor>
+        </mvc:interceptors> -->
+        
+        <!-- 配置Converter转换器 转换工厂 -->
+        <bean id="conversionServiceFactoryBean" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+       	 	<!-- 配置多个转换器 -->
+        	<!-- <property name="converters">
+        		<list>
+        			转换日期，将页面传来的日期转化为规格化Date类型，转换格式
+        			<bean class="com.id0304.ssy.converter.DateConverter"/>
+        		</list>
+        	</property> -->
+        </bean>
+
+        
+        <!-- 视图解释器 -->
+       <!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        	<property name="prefix" value="/jsp/"/>
+        	<property name="suffix" value=".jsp"/>
+        </bean> -->
+        
+   </beans>

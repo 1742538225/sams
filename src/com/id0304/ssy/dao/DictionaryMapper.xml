@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.id0304.ssy.dao.DictionaryMapper">
+	<select id="selectDicByType" parameterType="Integer" resultType="com.id0304.ssy.pojo.Dictionary">
+		select *from dictionary 
+		where 
+		d_type = #{value}
+	</select>
+	
+	<delete id="deleteDepartByName" parameterType="String">
+		delete from 
+		dictionary 
+		where 
+		d_name = #{value}
+	</delete>
+	
+	<insert id="insertDepart" parameterType="String">
+		insert into dictionary
+		(d_type,d_name) 
+		values
+		(0,#{value})
+	</insert>
+	
+	<select id="selectAllDepart" resultType="com.id0304.ssy.pojo.Dictionary">
+		select * 
+		from dictionary 
+		where 
+		d_type = 0
+	</select>
+	
+	<select id="selectAllClassRoom">
+		select *
+		from dictionary
+		where
+		d_type = 2
+	</select>
+</mapper>

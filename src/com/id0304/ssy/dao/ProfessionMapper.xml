@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.id0304.ssy.dao.ProfessionMapper">
+	<resultMap type="com.id0304.ssy.pojo.Profession" id="profession">
+		<id column="p_id" property="p_id"/>
+		<result column="p_depart" property="p_depart"/>
+		<result column="p_name" property="p_name"/>
+		<collection property="userList" javaType="com.id0304.ssy.pojo.User">
+			<result column="u_id" property="u_id"/>
+			<result column="u_password" property="u_password"/>
+			<result column="u_name" property="u_name"/>
+			<result column="u_identify" property="u_identify"/>
+			<result column="u_sex" property="u_sex"/>
+			<result column="u_age" property="u_age"/>
+			<result column="u_level" property="u_level"/>
+			<result column="u_depart" property="u_depart"/>
+			<result column="u_profession" property="u_profession"/>
+			<result column="u_address" property="u_address"/>
+			<result column="u_tel" property="u_tel"/>
+			<result column="u_enrolment" property="u_enrolment"/>
+			<result column="u_detail" property="u_detail"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectProfessionByPdepart" parameterType="String" resultMap="profession">
+		select * 
+		from profession
+		where
+		p_depart = #{value}
+	</select>
+	
+	<select id="selectAllProfession" resultType="com.id0304.ssy.pojo.Profession">
+		select * 
+		from profession 
+	</select>
+	
+	<select id="selectProfessionById" parameterType="String" resultType="com.id0304.ssy.pojo.Profession">
+		select * 
+		from profession 
+		where p_id = #{value}
+	</select>
+	
+	<update id="updateProfessionByPro" parameterType="com.id0304.ssy.pojo.Profession">
+		update profession 
+		set 
+		p_depart = #{p_depart},
+		p_name = #{p_name} 
+		where p_id = #{p_id}
+	</update>
+	
+	<delete id="deleteProById" parameterType="String">
+		delete from profession 
+		where 
+		p_id = #{value}
+	</delete>
+	
+	<insert id="insertProfession">
+		insert into profession
+		(p_depart,p_name) 
+		values
+		(#{p_depart},#{p_name})
+	</insert>
+	
+	<select id="selectProfessionByCondition" parameterType="String" resultType="com.id0304.ssy.pojo.Profession">
+		select * from profession 
+		where 
+		1=1 ${value}
+	</select>
+</mapper>

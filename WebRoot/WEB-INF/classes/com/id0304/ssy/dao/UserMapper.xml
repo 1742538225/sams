@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.id0304.ssy.dao.UserMapper">
+	<select id="selectLoginUser" parameterType="com.id0304.ssy.pojo.User"  resultType="com.id0304.ssy.pojo.User">
+		select * from user
+		where 
+		u_id = #{u_id}
+		and u_password = #{u_password} 
+	</select>
+	
+	<select id="selectUserById" parameterType="String"  resultType="com.id0304.ssy.pojo.User">
+		select * from user
+		where 
+		u_id = #{u_id}
+	</select>
+	
+	<select id="selectStudentByProfession" parameterType="String" resultType="com.id0304.ssy.pojo.User">
+		select * from user 
+		where 
+		u_profession = #{value} 
+		and u_identify = 0
+	</select>
+	
+	<select id="selectAllUser" resultType="com.id0304.ssy.pojo.User">
+		select * from user 
+		limit 
+		#{index},#{count}
+	</select>
+	
+	<select id="selectUserByConfident" resultType="com.id0304.ssy.pojo.User">
+		select * from user 
+		where 
+		1=1 ${con}
+		limit 
+		#{index},#{count}
+	</select>
+	
+	<update id="updateUserByUser" parameterType="com.id0304.ssy.pojo.User">
+		update user set 
+		u_name = #{u_name},u_password = #{u_password},u_identify = #{u_identify},u_credentials = #{u_credentials},
+		u_code = #{u_code},u_sex = #{u_sex},u_age = #{u_age},u_level = #{u_level},
+		u_native = #{u_native},u_birthday = #{u_birthday},u_fork = #{u_fork},u_political = #{u_political},
+		u_graduate = #{u_graduate},u_teage = #{u_teage},u_post = #{u_post},u_depart = #{u_depart},
+		u_profession = #{u_profession},u_class = #{u_class},u_address = #{u_address},u_tel = #{u_tel},
+		u_enrolment = #{u_enrolment},u_tuition = #{u_tuition},u_detail = #{u_detail} 
+		where u_id = #{u_id}
+	</update>
+	
+	<delete id="deleteUserByUid" parameterType="String">
+		delete from user 
+		where 
+		u_id = #{value}
+	</delete>
+	
+	<insert id="insertUser" parameterType="com.id0304.ssy.pojo.User">
+		insert into user values(#{u_id},#{u_password},#{u_name},#{u_identify},#{u_credentials},
+		#{u_code},#{u_sex},#{u_age},#{u_level},
+		#{u_native},#{u_birthday},#{u_fork},#{u_political},
+		#{u_graduate},#{u_teage},#{u_post},#{u_depart},
+		#{u_profession},#{u_class},#{u_address},#{u_tel},
+		#{u_enrolment},#{u_tuition},#{u_detail})
+	</insert>
+	
+	<select id="selectTeacherById" parameterType="String" resultType="com.id0304.ssy.pojo.User">
+		select *from user 
+		where 
+		u_id = #{value} 
+		and u_identify = 1
+	</select>
+	
+	<update id="updatePasswordByUser" parameterType="com.id0304.ssy.pojo.User">
+		update user 
+		set 
+		u_password = #{u_password} 
+		where 
+		u_id = #{u_id}
+	</update>
+</mapper>

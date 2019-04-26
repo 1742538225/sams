@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.id0304.ssy.dao.LessonMapper">
+	<resultMap type="com.id0304.ssy.pojo.Lesson" id="Lesson">
+		<id column="l_id" property="l_id" />
+		<result column="l_u_id" property="l_u_id" />
+		<result column="l_co_id" property="l_co_id" />
+		<result column="l_score" property="l_score" />
+		<association property="course" javaType="com.id0304.ssy.pojo.Course">
+			<result column="co_id" property="co_id" />
+			<result column="co_name" property="co_name" />
+			<result column="co_type" property="co_type" />
+			<result column="co_lessonnum" property="co_lessonnum" />
+			<result column="co_weeks" property="co_weeks" />
+			<result column="co_place" property="co_place" />
+			<result column="co_teacher" property="co_teacher" />
+			<result column="co_weekday" property="co_weekday" />
+			<result column="co_grade" property="co_grade" />
+			<result column="co_depart" property="co_depart" />
+			<result column="co_profession" property="co_profession" />
+			<result column="co_tedepart" property="co_tedepart" />
+			<result column="co_credit" property="co_credit" />
+			<result column="co_occupy" property="co_occupy" />
+			<result column="co_content" property="co_content" />
+		</association>
+		<association property="user" javaType="com.id0304.ssy.pojo.User">
+			<id column="u_id" property="u_id" />
+			<result column="u_password" property="u_password" />
+			<result column="u_name" property="u_name" />
+			<result column="u_identify" property="u_identify" />
+			<result column="u_sex" property="u_sex" />
+			<result column="u_age" property="u_age" />
+			<result column="u_level" property="u_level" />
+			<result column="u_depart" property="u_depart" />
+			<result column="u_profession" property="u_profession" />
+			<result column="u_address" property="u_address" />
+			<result column="u_class" property="u_class" />
+			<result column="u_tel" property="u_tel" />
+			<result column="u_enrolment" property="u_enrolment" />
+			<result column="u_detail" property="u_detail" />
+		</association>
+	</resultMap>
+
+	<select id="selectLessonByUid" parameterType="String" resultMap="Lesson">
+		select l.*,co.*
+		from lesson l inner
+		join course co
+		on
+		l.l_u_id = #{value}
+		and l.l_co_id = co.co_id
+	</select>
+
+	<insert id="insertLessonByUidAndCoid">
+		insert into lesson
+		(l_u_id,
+		l_co_id)
+		values
+		(#{l_u_id},
+		#{l_co_id})
+	</insert>
+
+	<select id="selectLessonCoidByUid" parameterType="String"
+		resultType="Integer">
+		select l_co_id
+		from lesson
+		where
+		l_u_id = #{value}
+	</select>
+
+	<select id="selectLessonAndStuByCoid" parameterType="String"
+		resultMap="Lesson">
+		select l.*,u.*,co.co_name
+		from lesson l
+		inner join user u
+		on
+		l.l_u_id = u.u_id
+		and (${ value} 1=0)
+		inner join course co
+		on
+		l.l_co_id =
+		co.co_id
+		and (${ value} 1=0)
+	</select>
+
+
+
+	<select id="selectLessonAndStuByCondition" resultMap="Lesson">
+		select
+		l.*,u.*,co.co_name
+		from lesson l
+		inner join user u
+		on
+		l.l_u_id = u.u_id
+		and (${coId} 1=0)
+		and ${uId}
+		inner join course co
+		on
+		l.l_co_id = co.co_id
+		and (${coId} 1=0)
+	</select>
+
+	<insert id="updateScoreByUidAndCoid">
+		update lesson
+		set l_score=#{score}
+		where
+		l_u_id =
+		#{u_id}
+		and l_co_id = #{co_id}
+	</insert>
+
+	<select id="selectLessonAndCoByUid" parameterType="String"
+		resultMap="Lesson">
+		select l.* , co.*
+		from lesson l
+		inner join course co
+		where
+		l.l_u_id = #{value}
+		and l.l_co_id = co.co_id
+	</select>
+
+	<select id="selectStuAndLessonAndByCoId" parameterType="Integer"
+		resultMap="Lesson">
+		select l.*,u.*
+		from lesson l
+		inner join user u
+		where
+		l.l_co_id =
+		#{value} and l.l_u_id = u.u_id
+	</select>
+
+	<update id="updateEvaluate">
+		update lesson
+		set l_evaluate = #{l_evaluate}
+		where
+		l_u_id = #{l_u_id}
+		and l_co_id = #{l_co_id}
+	</update>
+
+	<select id="selectAllLessonByPage" resultMap="Lesson">
+		select
+		l.*,u.u_name,co.co_name from
+		lesson l
+		inner join user u
+		on l.l_u_id =
+		u.u_id
+		inner join course co
+		on l.l_co_id = co.co_id
+		limit
+		#{index},#{count}
+	</select>
+
+	<insert id="insertLessonByLesson" parameterType="com.id0304.ssy.pojo.Lesson">
+		insert into
+		lesson(l_co_id,l_u_id,l_score,l_evaluate)
+		values(#{l_co_id},#{l_u_id},#{l_score},#{l_evaluate})
+	</insert>
+
+	<select id="selectLessonById" parameterType="Integer" resultMap="Lesson">
+		select l.*,u.u_name,co.co_name from
+		lesson l
+		inner join user u
+		on
+		l.l_u_id = u.u_id
+		inner join course co
+		on l.l_co_id = co.co_id
+		where
+		l.l_id = #{value}
+	</select>
+
+	<update id="updateLesson" parameterType="com.id0304.ssy.pojo.Lesson">
+		update lesson set
+		l_co_id = #{l_co_id},
+		l_u_id=#{l_u_id},
+		l_score=#{l_score},
+		l_evaluate=#{l_evaluate}
+		where l_id = #{l_id}
+	</update>
+
+	<delete id="deleteLessonById" parameterType="Integer">
+		delete from lesson
+		where
+		l_id = #{value}
+	</delete>
+	
+	<select id="selectLessonByCondition" resultMap="Lesson">
+		select l.*,u.u_name,co.co_name from
+		lesson l
+		inner join user u
+		on
+		l.l_u_id = u.u_id
+		inner join course co
+		on l.l_co_id = co.co_id
+		where 
+		1=1 
+		${findtext} 
+		${selectdepart} 
+		${selectlevel} 
+		limit
+		#{index},#{count}
+	</select>
+</mapper>
